@@ -1,0 +1,104 @@
+[gd_scene load_steps=4 format=3 uid="uid://rw603wmjhkpd"]
+
+[ext_resource type="FontFile" uid="uid://chjnqhxypo26q" path="res://Resources/DePixelKlein.otf" id="1_oforo"]
+
+[sub_resource type="GDScript" id="GDScript_xnpv5"]
+script/source = "@tool
+extends Control
+
+
+@export var itemName = \"Item Name\"
+@export var pageToOpen: Pages.PageNames
+@export var hovered:bool = false
+@export_range(5,250,1) var fontSize:int = 75
+
+@onready var itemLabel:Label = %\"Name Label\"
+@onready var underline = %Underline
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if hovered: hover()
+	else: unhover()
+	print(pageToOpen)
+	var labelSettingsNode:LabelSettings = LabelSettings.new()
+	labelSettingsNode.font = load(\"res://Resources/DePixelKlein.otf\")
+	labelSettingsNode.font_size = fontSize
+	itemLabel.label_settings = labelSettingsNode
+	
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	itemLabel.text = itemName
+	if Engine.is_editor_hint():
+		if hovered: hover()
+		else: unhover()
+		itemLabel.label_settings.font_size = fontSize
+	
+	
+func select():
+	get_tree().call_group(\"Page\",\"close\")
+	Pages.pageDict[pageToOpen].open()
+	
+func hover():
+	underline.visible = true
+	
+func unhover():
+	underline.visible = false
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_heqnn"]
+font = ExtResource("1_oforo")
+font_size = 110
+
+[node name="Page Link" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_xnpv5")
+itemName = "Page Link"
+pageToOpen = 3
+fontSize = 110
+
+[node name="Scale" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 901.0
+offset_bottom = 115.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+
+[node name="CenterContainer" type="CenterContainer" parent="Scale"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(152.964, 74.4149)
+
+[node name="Name Label" type="Label" parent="Scale/CenterContainer"]
+unique_name_in_owner = true
+texture_filter = 3
+layout_mode = 2
+text = "Page Link"
+label_settings = SubResource("LabelSettings_heqnn")
+vertical_alignment = 1
+
+[node name="Underline" type="ColorRect" parent="Scale/CenterContainer/Name Label"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 8.14)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0

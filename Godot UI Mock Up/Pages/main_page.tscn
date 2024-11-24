@@ -1,0 +1,500 @@
+[gd_scene load_steps=9 format=3 uid="uid://8p5uyfegg4ul"]
+
+[ext_resource type="FontFile" uid="uid://chjnqhxypo26q" path="res://Resources/DePixelKlein.otf" id="1_gb7mo"]
+[ext_resource type="PackedScene" uid="uid://rw603wmjhkpd" path="res://page_link.tscn" id="2_lcxry"]
+[ext_resource type="Texture2D" uid="uid://bm12qee5n6wpj" path="res://Resources/Battery Icon.png" id="2_sa028"]
+[ext_resource type="Texture2D" uid="uid://ohbbyqpqchsh" path="res://Resources/ammeter.png" id="3_xcsub"]
+[ext_resource type="PackedScene" uid="uid://c7vvo7xl6331y" path="res://switch.tscn" id="5_4f85p"]
+
+[sub_resource type="GDScript" id="GDScript_5ofka"]
+script/source = "extends Control
+
+@onready var selectedGaitLabel = %\"Selected Gait Label\"
+@onready var menuLink = $\"Menu Link\"
+
+var menu_position = 1
+var selected_gait_index = 0
+
+var gaits = [\"Tri\", \"Ripple\", \"Wave\", \"Quad\", \"Bi\", \"Hop\"]
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	Pages.MainPage = self
+	open()
+	
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_left\") or Input.is_action_just_pressed(\"ui_right\"):		
+		if menu_position == 1: menu_position = 2
+		else : menu_position = 1
+		setVisibility()
+		
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		select()
+		
+func open():
+	setVisibility()
+	setGait()
+	visible = true
+	print(\"main page opened\")
+	set_process(true)
+	
+	
+	
+func close():
+	visible = false
+	set_process(false)
+
+
+func setVisibility():
+		
+	menuLink.unhover()
+	
+	match menu_position:
+			
+		1:
+			pass
+			
+		2:
+			menuLink.hover()
+		
+func setGait():
+	selectedGaitLabel.text = gaits[selected_gait_index]
+
+
+func select():
+	match menu_position:
+		2:
+			menuLink.select()
+		1:
+			selected_gait_index += 1
+			if selected_gait_index >= gaits.size(): selected_gait_index = 0
+			Pages.GaitPage.hoveredIndex = selected_gait_index
+			
+			setGait()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvfjn"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.454902, 0.454902, 0.454902, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6odsl"]
+font = ExtResource("1_gb7mo")
+font_size = 75
+shadow_size = 0
+shadow_offset = Vector2(0, 0)
+
+[node name="Main Page" type="Control" groups=["Page"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_5ofka")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wvfjn")
+
+[node name="Body" type="Line2D" parent="."]
+position = Vector2(53, -20)
+scale = Vector2(3.07107, 3.07107)
+points = PackedVector2Array(26, 43, 35, 43, 38, 35, 35, 27, 26, 27, 23, 35, 26, 43)
+width = 1.0
+
+[node name="Body2" type="Line2D" parent="Body"]
+points = PackedVector2Array(27.6374, 40.8134, 33.7433, 40.8134, 35.6715, 35.0288, 33.422, 29.2442, 27.6374, 29.2442, 25.3878, 35.0288, 27.6374, 40.8134, 33.7433, 40.8134)
+width = 1.0
+
+[node name="Body3" type="Line2D" parent="Body"]
+points = PackedVector2Array(28.9229, 38.5638, 32.4579, 38.5638, 33.422, 35.0288, 32.1365, 31.4938, 29.2442, 31.4938, 27.6374, 35.0288, 28.9229, 38.5638, 32.4579, 38.5638)
+width = 1.0
+
+[node name="Body4" type="Line2D" parent="Body"]
+points = PackedVector2Array(29.887, 36.957, 31.8152, 37.5997, 32.1365, 35.0288, 31.4938, 32.7792, 30.2083, 32.4579, 28.6015, 34.7074, 29.5656, 37.2784, 29.5656, 37.5997, 31.8152, 37.5997, 30.2083, 35.3502, 30.8511, 33.1006)
+width = 1.975
+
+[node name="Leg 1" type="Line2D" parent="Body"]
+position = Vector2(1, -5)
+points = PackedVector2Array(35.6079, 51.6937, 34, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 1"]
+position = Vector2(2.36195, -0.229695)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Leg 2" type="Line2D" parent="Body"]
+position = Vector2(-8, -5)
+points = PackedVector2Array(32.2807, 51.6937, 34, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 2"]
+position = Vector2(-4.32713, -0.229695)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Leg 3" type="Line2D" parent="Body"]
+position = Vector2(-11, -13)
+points = PackedVector2Array(30.051, 48, 34, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 3"]
+position = Vector2(-6.93039, -5.67748)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Leg 4" type="Line2D" parent="Body"]
+position = Vector2(10, -13)
+points = PackedVector2Array(28, 48, 31.8376, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 4"]
+position = Vector2(-22.7007, -19.4988)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Leg 5" type="Line2D" parent="Body"]
+position = Vector2(60, 75)
+rotation = -3.14159
+points = PackedVector2Array(35.7194, 51.8398, 34, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 5"]
+position = Vector2(-13.5893, -0.457)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Leg 6" type="Line2D" parent="Body"]
+position = Vector2(69, 75)
+rotation = -3.14159
+points = PackedVector2Array(32.0187, 51.8398, 34, 48)
+width = 1.0
+
+[node name="Leg 1" type="Line2D" parent="Body/Leg 6"]
+position = Vector2(-9.81903, -13.5313)
+points = PackedVector2Array(36.8376, 51.935, 36.8376, 55.6705, 33.1021, 55.6705, 33.1021, 51.935, 36.8376, 51.935, 36.8376, 55.6705)
+width = 1.0
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 57.0
+offset_right = 48.0
+offset_bottom = 97.0
+
+[node name="Selected Gait Label2" type="Label" parent="Control"]
+texture_filter = 3
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 287.0
+offset_bottom = 86.0
+scale = Vector2(0.167876, 0.167876)
+text = "Gait:"
+label_settings = SubResource("LabelSettings_6odsl")
+
+[node name="Selected Gait Label" type="Label" parent="Control"]
+unique_name_in_owner = true
+texture_filter = 3
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+offset_left = 5.0
+offset_top = 20.0
+offset_right = 287.0
+offset_bottom = 101.0
+scale = Vector2(0.264323, 0.264323)
+text = "Tri"
+label_settings = SubResource("LabelSettings_6odsl")
+
+[node name="Menu Link" parent="." instance=ExtResource("2_lcxry")]
+layout_mode = 1
+offset_left = -54.0
+offset_top = 118.0
+offset_right = -199.0
+offset_bottom = -1.0
+scale = Vector2(0.808917, 0.808917)
+itemName = "Menu"
+pageToOpen = 2
+fontSize = 90
+
+[node name="Fill 5" type="Line2D" parent="Menu Link"]
+position = Vector2(49.4488, -50.6851)
+rotation = 1.01407e-05
+points = PackedVector2Array(28.4337, 59.3383, 25.9613, 66.7557, 28.4338, 74.173, 35.8512, 76.6453, 43.2685, 74.1728, 45.7408, 66.7555, 43.2683, 59.3382, 35.851, 56.8658)
+closed = true
+width = 1.0
+
+[node name="Selected Gait Label2" type="Label" parent="Menu Link/Fill 5"]
+texture_filter = 3
+custom_minimum_size = Vector2(100, 0)
+offset_left = 32.1424
+offset_top = 60.5745
+offset_right = 314.142
+offset_bottom = 141.574
+scale = Vector2(0.194106, 0.194106)
+text = "4"
+label_settings = SubResource("LabelSettings_6odsl")
+
+[node name="Info" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 42.0
+offset_bottom = 41.0
+scale = Vector2(0.936762, 0.936762)
+
+[node name="Grid Lines2" type="Line2D" parent="Info"]
+visible = false
+position = Vector2(54, 117)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(53.205, 82.6192, -152.424, 82.6197)
+width = 2.0
+
+[node name="Grid Lines3" type="Line2D" parent="Info"]
+visible = false
+position = Vector2(136, 171)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(69.0227, 93.5311, 69.023, 240.064)
+width = 2.0
+
+[node name="Grid Lines" type="Line2D" parent="Info"]
+visible = false
+position = Vector2(54.3522, 62.1285)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(56.5874, 82.8195, -151.918, 82.82, -159.108, 79.7023, -161.984, 71.9081, -161.984, -76.1832, -159.108, -83.9775, -151.918, -87.0952, 57.6742, -87.0958, 63.7768, -83.9781, 65.2148, -76.841, 65.2152, 71.9074, 62.3393, 79.7017, 56.5874, 82.8195, 52.2735, 82.8195)
+width = 2.0
+
+[node name="Grid" type="GridContainer" parent="Info"]
+layout_mode = 1
+offset_left = 220.974
+offset_top = 45.9028
+offset_right = 1394.98
+offset_bottom = 923.903
+scale = Vector2(0.18764, 0.18764)
+theme_override_constants/h_separation = 625
+theme_override_constants/v_separation = 50
+
+[node name="Battery" type="HBoxContainer" parent="Info/Grid"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Info/Grid/Battery"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Info/Grid/Battery/Control"]
+layout_mode = 2
+offset_left = -22.221
+offset_top = -22.2212
+offset_right = 404.779
+offset_bottom = 217.779
+scale = Vector2(0.594374, 0.594374)
+texture = ExtResource("2_sa028")
+
+[node name="Hexapod Battery Label" type="Label" parent="Info/Grid/Battery"]
+texture_filter = 3
+layout_mode = 2
+text = "99%"
+label_settings = SubResource("LabelSettings_6odsl")
+horizontal_alignment = 1
+
+[node name="Max Speed" type="HBoxContainer" parent="Info/Grid"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Info/Grid/Max Speed"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="Battery Level" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(162.232, 178.163)
+rotation = -3.14159
+scale = Vector2(2.69777, 2.67067)
+points = PackedVector2Array(38.5801, 40.5301, 44.7529, 40.5301, 44.7529, 48.3244, 37.0369, 60.7953, 24.6914, 67.0307, 15.4322, 67.0307)
+width = 3.0
+
+[node name="Battery Level2" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(33.1736, 203.142)
+rotation = -3.14159
+scale = Vector2(2.69777, 2.67067)
+points = PackedVector2Array(-32.4071, 51.4423, -27.7775, 51.4423, -27.7774, 56.1188, -32.407, 56.1188, -32.4071, 51.4423, -27.7775, 51.4423, -40.123, 67.0309)
+width = 3.0
+
+[node name="Battery Level3" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(66.4789, 178.163)
+rotation = -3.14159
+scale = Vector2(-2.698, 2.671)
+points = PackedVector2Array(38.5801, 40.5301, 44.7529, 40.5301, 44.7529, 48.3244, 37.0369, 60.7953, 24.6914, 67.0307, 15.4322, 67.0307)
+width = 3.0
+
+[node name="Battery Level4" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(99.7846, 194.815)
+rotation = -3.14159
+scale = Vector2(-2.698, 2.671)
+points = PackedVector2Array(24.6914, 67.0307, 20.0597, 62.3466)
+width = 3.0
+
+[node name="Battery Level5" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(12.3575, 203.142)
+rotation = -3.14159
+scale = Vector2(-2.698, 2.671)
+points = PackedVector2Array(18.5166, 70.14, 23.1458, 65.464)
+width = 3.0
+
+[node name="Battery Level6" type="Line2D" parent="Info/Grid/Max Speed/Control"]
+position = Vector2(49.8262, 178.163)
+rotation = -3.14159
+scale = Vector2(-2.698, 2.671)
+points = PackedVector2Array(24.6914, 67.0307, 24.6889, 60.788)
+width = 3.0
+
+[node name="Hexapod Max Speed Label" type="Label" parent="Info/Grid/Max Speed"]
+texture_filter = 3
+layout_mode = 2
+text = "75%"
+label_settings = SubResource("LabelSettings_6odsl")
+horizontal_alignment = 1
+
+[node name="Amps" type="HBoxContainer" parent="Info/Grid"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Info/Grid/Amps"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Info/Grid/Amps/Control"]
+layout_mode = 2
+offset_left = -75.2292
+offset_top = -91.5902
+offset_right = 542.771
+offset_bottom = 342.41
+scale = Vector2(0.594374, 0.594374)
+texture = ExtResource("3_xcsub")
+stretch_mode = 5
+
+[node name="Grid Lines3" type="Line2D" parent="Info/Grid/Amps/Control"]
+position = Vector2(23.2964, 208.879)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(-57.5156, 270.19, 0.000488281, 270.189)
+width = 10.315
+
+[node name="Grid Lines4" type="Line2D" parent="Info/Grid/Amps/Control"]
+position = Vector2(152.179, 208.879)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(-57.5156, 270.19, 0.000488281, 270.189)
+width = 10.315
+
+[node name="Hexapod Current Label" type="Label" parent="Info/Grid/Amps"]
+texture_filter = 3
+layout_mode = 2
+text = "10.2A"
+label_settings = SubResource("LabelSettings_6odsl")
+
+[node name="Height" type="HBoxContainer" parent="Info/Grid"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Info/Grid/Height"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="Battery Level" type="Line2D" parent="Info/Grid/Height/Control"]
+position = Vector2(134.473, 179.238)
+rotation = -3.14159
+scale = Vector2(2.69777, 2.67067)
+points = PackedVector2Array(13.0038, 58.2614, 6.83104, 69.1734, 0.658218, 58.2615)
+width = 3.0
+
+[node name="Battery Level2" type="Line2D" parent="Info/Grid/Height/Control"]
+position = Vector2(36.9438, 206.821)
+rotation = -3.14159
+scale = Vector2(2.69777, 2.67067)
+points = PackedVector2Array(-29.3207, 51.4423, -29.3206, 68.5897)
+width = 3.0
+
+[node name="Battery Level3" type="Line2D" parent="Info/Grid/Height/Control"]
+position = Vector2(132.697, 227.637)
+rotation = -3.14159
+scale = Vector2(2.69777, 2.67067)
+points = PackedVector2Array(12.3457, 59.2365, 6.17291, 51.4422, 0.000152588, 59.2365)
+width = 3.0
+
+[node name="Hexapod Height Label" type="Label" parent="Info/Grid/Height"]
+texture_filter = 3
+layout_mode = 2
+text = "30mm
+"
+label_settings = SubResource("LabelSettings_6odsl")
+horizontal_alignment = 1
+
+[node name="Grid Lines4" type="Line2D" parent="."]
+visible = false
+position = Vector2(54, 116)
+rotation = -3.14159
+scale = Vector2(0.695425, 0.641496)
+points = PackedVector2Array(63.2706, -0.000167847, 63.271, 163.68, -159.615, 0.000442505, -159.614, 162.121, 63.2706, -0.000167847)
+width = 2.0
+
+[node name="Battery Outline" type="Line2D" parent="."]
+visible = false
+position = Vector2(388, 156)
+rotation = -3.14159
+scale = Vector2(2.89519, 2.67067)
+points = PackedVector2Array(38.685, 52.4212, 38.685, 55.4167, 33.8494, 55.4167, 33.8494, 54.2934, 33.1586, 54.2934, 33.1586, 53.5445, 33.8494, 53.5445, 33.8494, 52.4212, 38.685, 52.4212, 38.685, 55.4167)
+width = 1.0
+
+[node name="Battery Level" type="Line2D" parent="Battery Outline"]
+position = Vector2(138.852, 196.205)
+rotation = -3.14159
+scale = Vector2(2.89519, 2.67067)
+points = PackedVector2Array(34.717, 53.2771, 35.4328, 53.2771)
+width = 1.0
+
+[node name="Center" type="Line2D" parent="."]
+visible = false
+position = Vector2(138.852, 196.205)
+rotation = -3.14159
+scale = Vector2(2.89519, 2.67067)
+points = PackedVector2Array(-55.3152, 18.0499, 47.6143, 72.7176, 47.6142, 18.0496, -55.315, 73.0923, -55.3152, 17.6755, -38.538, 17.6755, -3.85048, 17.6754, -3.85035, 73.0922, 28.6173, 73.0921, 28.6172, 17.3008, -37.6997, 17.301, -37.3542, 73.0922)
+width = 0.415
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 298.0
+offset_bottom = 25.0
+alignment = 1
+
+[node name="Switch 1" parent="HBoxContainer" instance=ExtResource("5_4f85p")]
+layout_mode = 2
+SwitchName = "Gyro"
+
+[node name="Switch 2" parent="HBoxContainer" instance=ExtResource("5_4f85p")]
+layout_mode = 2
+SwitchName = "Step"
+
+[node name="Switch 3" parent="HBoxContainer" instance=ExtResource("5_4f85p")]
+layout_mode = 2
+SwitchName = "Bal"
+
+[node name="Switch 4" parent="HBoxContainer" instance=ExtResource("5_4f85p")]
+layout_mode = 2
+SwitchName = "Slow"
