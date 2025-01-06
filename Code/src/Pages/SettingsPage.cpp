@@ -38,11 +38,14 @@ const int numSettings = sizeof(settings) / sizeof(settings[0]);
 void SettingsPage::init()
 {
     rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 }
 
 void SettingsPage::loop()
 {
-    if (getRotaryEncoderSwitchValue() == UNPRESSED) rotaryEncoderButtonReady = true;
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
+
+    if (rotaryEncoderSwitchValue == UNPRESSED) rotaryEncoderButtonReady = true;
 
     /*Back*/
     if (getButtonValue(A) == PRESSED){
@@ -126,7 +129,7 @@ void SettingsPage::loop()
     }
 
     /*Change Setting Value*/
-    if (getRotaryEncoderSwitchValue() == PRESSED && rotaryEncoderButtonReady)
+    if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady)
     {
         // When a setting is selected, open a popup window to select a new value, then save the value
         if (settings[hovered].type == BOOLEAN)

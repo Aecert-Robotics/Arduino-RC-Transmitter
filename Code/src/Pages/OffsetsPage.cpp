@@ -51,10 +51,15 @@ void OffsetsPage::init()
     lastCursorBlinkTime = millis(); // Initialize the cursor blink timer
     offsetsModified = false; // Reset the modified flag
     memcpy(offsets, hexSavedOffsets, sizeof(offsets)); // Load the offsets from the hex_data struct
+
+    rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 }
 
 void OffsetsPage::loop()
 {       
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
+
     if (getButtonValue(A) == PRESSED) currentPage = mainMenuPage;
     drawPageHeader("< Home < Menu < ", "Offsets");
 

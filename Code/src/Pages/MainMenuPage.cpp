@@ -5,11 +5,11 @@
 #include "Globals.h"
 #include "NRF.h"
 
-
 void MainMenuPage::init()
 {
     backButtonReady = false;
     rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 
     //ignore spins when entering the page
     getRotaryEncoderSpins();
@@ -17,6 +17,8 @@ void MainMenuPage::init()
 
 void MainMenuPage::loop()
 {   
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
+
     if (getButtonValue(A) == UNPRESSED) backButtonReady = true;
     if (getButtonValue(A) == PRESSED  && backButtonReady) currentPage = homePage;
     
@@ -78,8 +80,9 @@ void MainMenuPage::loop()
     if (hovered == 4)
         u8g2.drawRFrame(71, y + rowSpacing - 11, 56, 16, 5);
 
-    if (getRotaryEncoderSwitchValue() == UNPRESSED) rotaryEncoderButtonReady = true;
-    if (getRotaryEncoderSwitchValue() == PRESSED  && rotaryEncoderButtonReady)
+
+    if (rotaryEncoderSwitchValue == UNPRESSED && !rotaryEncoderButtonReady) rotaryEncoderButtonReady = true;    
+    if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady)
     {
         switch (hovered)
         {

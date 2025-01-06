@@ -13,6 +13,7 @@ public:
     virtual void loop() = 0;
     virtual ~Page() = default;
     bool rotaryEncoderButtonReady;
+    int rotaryEncoderSwitchValue;
 };
 
 // Home Page

@@ -31,17 +31,20 @@ void ControlsPage::init()
     inputDescription = "";
 
     rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 }
 
 void ControlsPage::loop()
 {
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
+
     u8g2.setFont(FONT_BOLD_HEADER);
     u8g2.drawStr(64 - (u8g2.getStrWidth(inputName.c_str()) / 2), 25, inputName.c_str());
 
     u8g2.setFont(FONT_TEXT);
     drawWrappedStr(inputDescription.c_str(), 2, 37, 127, true, 1);
 
-    if (getRotaryEncoderSwitchValue() == UNPRESSED) rotaryEncoderButtonReady = true;
+    if (rotaryEncoderSwitchValue == UNPRESSED) rotaryEncoderButtonReady = true;
 
     if (getButtonValue(A) == PRESSED)
         currentPage = mainMenuPage;
@@ -144,7 +147,7 @@ void ControlsPage::loop()
     }
 
     
-    else if ((getRotaryEncoderSpins() != 0 || getRotaryEncoderSwitchValue() == PRESSED) && rotaryEncoderButtonReady){
+    else if ((getRotaryEncoderSpins() != 0 || rotaryEncoderSwitchValue == PRESSED) && rotaryEncoderButtonReady){
         inputName = "Rotary Encoder";
         inputDescription = ROTARY_ENCODER_DESCRIPTION;
     }

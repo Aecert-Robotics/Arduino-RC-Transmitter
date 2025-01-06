@@ -12,7 +12,6 @@ int legsXMultiplier[6] = {-1, -1, -1, 1, 1, 1};
 int legsYMultiplier[6] = {-1, -1, -1, 1, 1, 1};
 int rotationMultiplier[6] = {1, 0, -1, 1, 0 , -1};
 
-
 void rotateLeg(int angle, Vector3 &leg, Vector2 pivot) {
     // Translate line so pivot point is at the origin
     if(angle == 0) return;
@@ -33,10 +32,13 @@ void rotateLeg(int angle, Vector3 &leg, Vector2 pivot) {
 void HomePage::init()
 {
     rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 }
 
 void HomePage::loop()
 {    
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
+
     rc_control_data.joy1_X = getJoyValue(A).x;
     rc_control_data.joy1_Y = getJoyValue(A).y;
     rc_control_data.joy1_Button = getJoyButtonValue(A);
@@ -54,7 +56,7 @@ void HomePage::loop()
     rc_control_data.sleep = (long int)getTimeSinceLastInput() > sleepDelayTime ? 1 : 0; 
 
     startTime = millis(); 
-
+    
          
 
     int offset = 35;
@@ -87,8 +89,13 @@ void HomePage::loop()
 
     /*Main Menu Button*/
     drawStringButton(4, 59, "E", "Menu", FONT_TEXT);
-    if (getRotaryEncoderSwitchValue() == UNPRESSED) rotaryEncoderButtonReady = true;
-    if (getRotaryEncoderSwitchValue() == PRESSED  && rotaryEncoderButtonReady) currentPage = mainMenuPage;
+
+
+    
+
+    if (rotaryEncoderSwitchValue == UNPRESSED && !rotaryEncoderButtonReady) rotaryEncoderButtonReady = true;    
+    if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady) currentPage = mainMenuPage;
+    
 
     /*Gait Display*/
     drawStringButton(4, 25, "B", "Gait", FONT_TEXT);
@@ -129,16 +136,6 @@ void HomePage::loop()
         legs[i].x *= legsXMultiplier[i];
         legs[i].y *= legsYMultiplier[i];
     }
-
-    Serial.print("raw pos ");
-    Serial.print(foot_positions[0].x);
-    Serial.print(", ");
-    Serial.print(foot_positions[0].y);
-
-    Serial.print(" fixed pos ");
-    Serial.print(legs[0].x);
-    Serial.print(", ");
-    Serial.println(legs[0].y);
     
     
 

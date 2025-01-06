@@ -11,10 +11,14 @@ void GaitsPage::init()
 {
     hovered = selectedGait;
     resetAnimation();
+
+    rotaryEncoderButtonReady = false;
+    rotaryEncoderSwitchValue = UNPRESSED;
 }
 
 void GaitsPage::loop()
 {
+    rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
     int previousHovered = hovered;
 
     if (getButtonValue(A) == PRESSED)
@@ -40,7 +44,7 @@ void GaitsPage::loop()
     if (previousHovered != hovered)
         resetAnimation();
 
-    if (getRotaryEncoderSwitchValue() == PRESSED)
+    if (rotaryEncoderSwitchValue == PRESSED)
     {
         selectedGait = Gaits(hovered);
     }

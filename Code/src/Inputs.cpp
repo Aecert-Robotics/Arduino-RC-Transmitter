@@ -18,7 +18,7 @@ volatile int count = 0;
 int protectedCount = 0;
 int previousCount = 0;
 bool switchPressed = false;
-const int DEBOUNCE_TIME = 1;
+const int DEBOUNCE_TIME = 4;
 unsigned long timeSinceReleased = 0;
 
 const byte encoderPinA = 2; // outputA digital pin2
@@ -366,29 +366,24 @@ int getRotaryEncoderTotalSpins()
 int getRotaryEncoderSwitchValue()
 {
     uint8_t switchValue = digitalRead(RotaryEncoderButton_Pin);
-    if (switchValue == PRESSED)
-    {
-        timeSinceLastInput = millis();
-        lastInputName = "RotaryEncoderSwitch"; // Add this line
-        return PRESSED;
-    }
     if (switchValue == PRESSED && !switchPressed)
     {
         if (millis() - timeSinceReleased > DEBOUNCE_TIME)
         {
-            if (false)
-                Serial.println("Switch Pressed!");
+            Serial.println("Switch Pressed!");
+            timeSinceLastInput = millis();
+            lastInputName = "RotaryEncoderSwitch";
             switchPressed = true;
             return PRESSED;
         }
     }
+
     if (switchValue == UNPRESSED && switchPressed)
     {
-        if (false)
-            Serial.println("Switch Released.");
+        Serial.println("Switch Released.");
         switchPressed = false;
         timeSinceReleased = millis();
-        return PRESSED;
+        return UNPRESSED;
     }
 
     return UNPRESSED;

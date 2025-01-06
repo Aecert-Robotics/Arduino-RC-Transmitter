@@ -17,13 +17,16 @@ int openPopupMultiChoice(String header, String choices[], int numChoices, int ho
     int headerWidth = u8g2.getStrWidth(header.c_str());
 
     bool rotaryEncoderButtonReady = false;
+    int rotaryEncoderSwitchValue = UNPRESSED;
 
     while (selection == -1)
     {
         sendNRFData(RC_SETTINGS_DATA);
+        rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-        if (getRotaryEncoderSwitchValue() == UNPRESSED)
+        if (rotaryEncoderSwitchValue == UNPRESSED)
             rotaryEncoderButtonReady = true;
+
         u8g2.clearBuffer();
 
         /*Draw Frame*/
@@ -71,7 +74,7 @@ int openPopupMultiChoice(String header, String choices[], int numChoices, int ho
         else if (hovered < 0)
             hovered = 0;
 
-        if (getRotaryEncoderSwitchValue() == PRESSED && rotaryEncoderButtonReady)
+        if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady)
         {
             selection = hovered;
         }
@@ -91,6 +94,8 @@ long int openPopupNumber(String header, long int initialValue, long int minValue
     int headerWidth = u8g2.getStrWidth(header.c_str());
 
     bool rotaryEncoderButtonReady = false;
+    int rotaryEncoderSwitchValue = UNPRESSED;
+
     unsigned long lastIncrementTime = 0;
     unsigned long maxScrollDelay = 200; // Start with a 200ms delay
     unsigned long currentScrollDelay = maxScrollDelay;
@@ -99,8 +104,9 @@ long int openPopupNumber(String header, long int initialValue, long int minValue
     while (true)
     {
         sendNRFData(RC_SETTINGS_DATA);
+        rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-        if (getRotaryEncoderSwitchValue() == UNPRESSED)
+        if (rotaryEncoderSwitchValue == UNPRESSED)
             rotaryEncoderButtonReady = true;
         u8g2.clearBuffer();
 
@@ -175,7 +181,7 @@ long int openPopupNumber(String header, long int initialValue, long int minValue
             }
         }
 
-        if (getRotaryEncoderSwitchValue() == PRESSED && rotaryEncoderButtonReady) return value;
+        if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady) return value;
     }
 }
 
@@ -199,6 +205,8 @@ String openPopupString(String header, String initialValue, int stringLength)
     int headerWidth = u8g2.getStrWidth(header.c_str());
 
     bool rotaryEncoderButtonReady = false;
+    int rotaryEncoderSwitchValue = UNPRESSED;
+    
     unsigned long lastIncrementTime = 0;
     unsigned long maxScrollDelay = 200; // Start with a 500ms delay
     unsigned long currentScrollDelay = maxScrollDelay;
@@ -210,8 +218,9 @@ String openPopupString(String header, String initialValue, int stringLength)
     while (true)
     {
         sendNRFData(RC_SETTINGS_DATA);
+        rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-        if (getRotaryEncoderSwitchValue() == UNPRESSED)
+        if (rotaryEncoderSwitchValue == UNPRESSED)
             rotaryEncoderButtonReady = true;
         u8g2.clearBuffer();
 
@@ -313,7 +322,7 @@ String openPopupString(String header, String initialValue, int stringLength)
             }
         }
 
-        if (getRotaryEncoderSwitchValue() == PRESSED && rotaryEncoderButtonReady)
+        if (rotaryEncoderSwitchValue == PRESSED && rotaryEncoderButtonReady)
         {
             return value.substring(0, stringLength);
         }
