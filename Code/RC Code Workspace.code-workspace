@@ -1,8 +1,16 @@
 {
 	"folders": [
 		{
-			"name": "RC Code",
-			"path": "../Code"
+			"name": "Code-Hexapod",
+			"path": "Code-Hexapod"
+		},
+		{
+			"name": "Code-Simple",
+			"path": "Code-Simple"
+		},
+		{
+			"name": "Hexapod Leg Test",
+			"path": "../../Micro-Hexapod/Code/Hexapod Leg Test"
 		}
 	],
 	"settings": {}
