@@ -9,8 +9,8 @@
 			"path": "Code-Simple"
 		},
 		{
-			"name": "Hexapod Leg Test",
-			"path": "../../Micro-Hexapod/Code/Hexapod Leg Test"
+			"name": "Simple-Receiver-Example",
+			"path": "Simple-Receiver-Example"
 		}
 	],
 	"settings": {}
