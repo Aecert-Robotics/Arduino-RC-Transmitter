@@ -15,18 +15,18 @@ void setupNRF()
 {
     ack_data.connected = 0;
     radio.begin();
-    radio.setDataRate(RF24_250KBPS); //(RF24_250KBPS|RF24_1MBPS|RF24_2MBPS)
+    radio.setDataRate(RF24_250KBPS);
     radio.enableAckPayload();
     radio.setRetries(5, 5);
     radio.openWritingPipe(nrfAddress);
 }
 void sendNRFData()
 {
-    radio.write(&rc_data, sizeof(rc_data)); // Send control data
+    radio.write(&rc_data, sizeof(rc_data)); // Send Data Package
 
     if (radio.isAckPayloadAvailable())
     {
-        Serial.println("Ack Payload Available");
+        //Serial.println("Ack Payload Available");
         radio.read(&ack_data, sizeof(ack_data));
     }
     else{

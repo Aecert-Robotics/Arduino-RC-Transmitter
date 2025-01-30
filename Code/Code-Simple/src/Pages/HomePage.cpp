@@ -32,7 +32,6 @@ void HomePage::loop()
 
     rc_data.potLeft = getPotValue(A);
     rc_data.potRight = getPotValue(B);
-    mpu.update();
     rc_data.button_A = getButtonValue(A);
     rc_data.button_B = getButtonValue(B);
     rc_data.button_C = getButtonValue(C);
@@ -47,7 +46,6 @@ void HomePage::loop()
     rc_data.bumper_B = getBumperValue(B);
     rc_data.bumper_C = getBumperValue(C);
     rc_data.bumper_D = getBumperValue(D);
-    mpu.update();
     startTime = millis(); 
 
     int textY = 6;

@@ -6,10 +6,7 @@
 #include "RF24.h" 
 #include "nRF24L01.h" 
 
-
-// Define the radio and addresses
 extern RF24 radio;
-
 extern unsigned long rc_send_interval;
 
 // 32 Byte max
@@ -45,11 +42,14 @@ struct RC_Data_Package {
     byte joyRight_Button:1; // 1 bit
     byte reserved : 2;  // 2 bits padding
 
+    //8 bytes total
 };
 
 struct Ack_Data_Package {
     byte connected:1; // 1 bit
     byte reserved:7;  // 7 bits padding
+
+    //1 byte total
 };
 
 // Declare the data package variables

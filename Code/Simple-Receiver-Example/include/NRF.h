@@ -49,11 +49,9 @@ struct Ack_Data_Package {
     byte reserved:7;  // 7 bits padding
 };
 
-extern RC_Data_Package dataPackage;
-extern Ack_Data_Package ackPackage;
+extern RC_Data_Package rc_data;
+extern Ack_Data_Package ack_Data;
 
 void setupNRF();
-void recieveNRFData();
+void receiveNRFData();
 void RC_DisplayData();
-void sendAckData();
-void lostConnection();

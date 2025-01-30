@@ -7,23 +7,24 @@
 #define BUMPER_C_DESCRIPTION "Not in use."
 #define BUMPER_D_DESCRIPTION "Not in use."
 
-#define SWITCH_A_DESCRIPTION "Gyro Toggle. Control the hex's body tilt by tilting the RC."
-#define SWITCH_B_DESCRIPTION "High Step Toggle. Drastically increases the feet lift height."
-#define SWITCH_C_DESCRIPTION "Easy Mode Toggle. Limits the move speed and acceleration."
+#define SWITCH_A_DESCRIPTION "Not in use."
+#define SWITCH_B_DESCRIPTION "Not in use."
+#define SWITCH_C_DESCRIPTION "Not in use."
 #define SWITCH_D_DESCRIPTION "Not in use."
 
-#define JOY_LEFT_DESCRIPTION "Strafe Stick. Makes the hex strafe when pushed in any direction."
-#define JOY_RIGHT_DESCRIPTION "Rotation Stick. Makes the hex rotate when pushed left or right."
+#define JOY_LEFT_DESCRIPTION "Not in use."
+#define JOY_RIGHT_DESCRIPTION "Not in use."
 
-#define POT_A_DESCRIPTION "Max Speed Dial. Sets the hex's max speed."
-#define POT_B_DESCRIPTION "Height Dial. Sets the hex's distance from the ground."
+#define POT_A_DESCRIPTION "Not in use."
+#define POT_B_DESCRIPTION "Not in use."
 
 #define JOY_LEFT_BUTTON_DESCRIPTION "Not in use."
 #define JOY_RIGHT_BUTTON_DESCRIPTION "Not in use."
 
 #define ROTARY_ENCODER_DESCRIPTION "UI Dial. Used for UI navigation of the RC."
 
-#define BUTTON_B_DESCRIPTION "Gait Change Button. Used to quickly change the Gait."
+//#define BUTTON_A_DESCRIPTION "Back button."
+#define BUTTON_B_DESCRIPTION "Not in use."
 #define BUTTON_C_DESCRIPTION "Not in use."
 #define BUTTON_D_DESCRIPTION "Not in use."
 
@@ -116,8 +117,6 @@ extern SettingsPage *settingsPage;
 
 #define EEPROM_NRF_ADDRESS_ADDR         0 //requires 6 bytes
 #define EEPROM_NRF_ADDRESS_ARRAY_SIZE    6 // size of the NRF address in bytes
-
-#define OFFSETS_COUNT 18
 
 extern uint8_t nrfAddress[EEPROM_NRF_ADDRESS_ARRAY_SIZE]; // NRF chip address as an array of bytes
 

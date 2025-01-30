@@ -42,17 +42,17 @@ void setup()
 
 void loop()
 {
-  if (!dataPackage.toggle_A) moveToPos(calibrationPosition);
+  if (!rc_data.toggle_A) moveToPos(calibrationPosition);
   else JoystickMove();
 
-  recieveNRFData();
+  receiveNRFData();
 }
 
 void JoystickMove()
 {
-  int xVal = floatMap(dataPackage.joyLeft_X, 0, 256, 130, -130);
-  int yVal = floatMap(dataPackage.joyRight_Y, 0, 256, 150, 70);
-  int zVal = floatMap(dataPackage.joyLeft_Y, 0, 256, -110, 40);
+  int xVal = floatMap(rc_data.joyLeft_X, 0, 256, 130, -130);
+  int yVal = floatMap(rc_data.joyRight_Y, 0, 256, 150, 70);
+  int zVal = floatMap(rc_data.joyLeft_Y, 0, 256, -110, 40);
 
   targetPosition = Vector3(xVal, yVal, zVal);
   currentPosition = currentPosition + (targetPosition - currentPosition) * 0.02;
