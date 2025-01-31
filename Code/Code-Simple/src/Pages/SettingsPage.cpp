@@ -18,14 +18,17 @@ struct Setting
     const char *name;        // Name of the setting
     SettingType type;        // Type of the setting
     void *value;             // Pointer to the value
-    long int minVal, maxVal; // For integers, define a range
+    long int minVal, maxVal; // For integers or strings, define a range
 };
 
 uint8_t nrfAddress[EEPROM_NRF_ADDRESS_ARRAY_SIZE]; // NRF chip address as an array of bytes
+long int numberTest;
+bool booleanTest;
 
 Setting settings[] = {
-    {"NRF Addr", STRING, &nrfAddress, EEPROM_NRF_ADDRESS_ARRAY_SIZE-1, EEPROM_NRF_ADDRESS_ARRAY_SIZE-1}
-    };
+    {"NRF Addr", STRING, &nrfAddress, EEPROM_NRF_ADDRESS_ARRAY_SIZE - 1, EEPROM_NRF_ADDRESS_ARRAY_SIZE - 1},
+    {"number test", INTEGER, &numberTest, -10, 10},
+    {"boolean test", BOOLEAN, &booleanTest}};
 
 const int numSettings = sizeof(settings) / sizeof(settings[0]);
 
@@ -39,13 +42,15 @@ void SettingsPage::loop()
 {
     rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-    if (rotaryEncoderSwitchValue == UNPRESSED) rotaryEncoderButtonReady = true;
+    if (rotaryEncoderSwitchValue == UNPRESSED)
+        rotaryEncoderButtonReady = true;
 
     /*Back*/
-    if (getButtonValue(A) == PRESSED){
+    if (getButtonValue(A) == PRESSED)
+    {
         currentPage = mainMenuPage;
-    }       
-    
+    }
+
     /*Scrolling*/
     int increment = 0;
     int spins = getRotaryEncoderSpins();
@@ -70,8 +75,6 @@ void SettingsPage::loop()
     u8g2.setFont(FONT_TEXT_MONOSPACE);
     u8g2.drawStr(115, 63, String(getRotaryEncoderTotalSpins()).c_str());
 
-    
-
     /*Display the list*/
     int rowSpacing = 14;
     int listYStart = 24;
@@ -93,7 +96,7 @@ void SettingsPage::loop()
         if (settings[i].type == INTEGER)
         {
             // Format as a normal integer
-            sprintf(buffer, "%s: %ld", name, *(long int*)valuePtr);
+            sprintf(buffer, "%s: %ld", name, *(long int *)valuePtr);
         }
         else if (settings[i].type == BOOLEAN)
         {
@@ -101,15 +104,15 @@ void SettingsPage::loop()
             sprintf(buffer, "%s: %s", name, (*(bool *)valuePtr) ? "On" : "Off");
         }
         else if (settings[i].type == STRING)
-    {
-        // Ensure the string is null-terminated
-        char strBuffer[EEPROM_NRF_ADDRESS_ARRAY_SIZE]; // 5 characters + 1 for null terminator
-        strncpy(strBuffer, (char*)valuePtr, EEPROM_NRF_ADDRESS_ARRAY_SIZE-1);
-        strBuffer[EEPROM_NRF_ADDRESS_ARRAY_SIZE-1] = '\0'; // Null-terminate the string
+        {
+            // Ensure the string is null-terminated
+            char strBuffer[settings[i].maxVal]; // 5 characters + 1 for null terminator
+            strncpy(strBuffer, (char *)valuePtr, settings[i].maxVal - 1);
+            strBuffer[settings[i].maxVal - 1] = '\0'; // Null-terminate the string
 
-        // Display the string directly
-        sprintf(buffer, "%s: %s", name, strBuffer);
-    }
+            // Display the string directly
+            sprintf(buffer, "%s: %s", name, strBuffer);
+        }
 
         // Draw the setting string on the display
         if (hovered < i + 3)
@@ -129,12 +132,12 @@ void SettingsPage::loop()
         if (settings[hovered].type == BOOLEAN)
         {
             String options[] = {"Off", "On"};
-            bool newValue = openPopupMultiChoice(settings[hovered].name, options, 2, *(bool*)settings[hovered].value);
+            bool newValue = openPopupMultiChoice(settings[hovered].name, options, 2, *(bool *)settings[hovered].value);
 
-            *(bool*)settings[hovered].value = newValue;
+            *(bool *)settings[hovered].value = newValue;
             saveValues();
 
-            rotaryEncoderButtonReady = false;            
+            rotaryEncoderButtonReady = false;
         }
 
         // When a setting is selected, open a popup window to select a new value, then save the value
@@ -142,10 +145,10 @@ void SettingsPage::loop()
         {
             long min = settings[hovered].minVal;
             long max = settings[hovered].maxVal;
-            long val = *(long int*)settings[hovered].value;
+            long val = *(long int *)settings[hovered].value;
 
             long int newValue = openPopupNumber(settings[hovered].name, constrain(val, min, max), min, max);
-            *(long int*)settings[hovered].value = newValue;
+            *(long int *)settings[hovered].value = newValue;
             saveValues();
 
             rotaryEncoderButtonReady = false;
@@ -153,16 +156,16 @@ void SettingsPage::loop()
 
         if (settings[hovered].type == STRING)
         {
-            String newValue = openPopupString(settings[hovered].name, String((char*)settings[hovered].value), settings[hovered].maxVal);
-            strncpy((char*)settings[hovered].value, newValue.c_str(), settings[hovered].maxVal);
+            String newValue = openPopupString(settings[hovered].name, String((char *)settings[hovered].value), settings[hovered].maxVal);
+            strncpy((char *)settings[hovered].value, newValue.c_str(), settings[hovered].maxVal);
             saveValues();
             rotaryEncoderButtonReady = false;
         }
     }
 
     /*Draw Scroll Bar*/
-    if(numSettings > 1){
+    if (numSettings > 1)
+    {
         drawScrollBar(numSettings, hovered);
     }
-    
 }

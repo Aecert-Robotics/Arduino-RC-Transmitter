@@ -117,8 +117,12 @@ extern SettingsPage *settingsPage;
 
 #define EEPROM_NRF_ADDRESS_ADDR         0 //requires 6 bytes
 #define EEPROM_NRF_ADDRESS_ARRAY_SIZE    6 // size of the NRF address in bytes
+#define EEPROM_NUMBER_TEST_ADDR 6 //requires 4 byte
+#define EEPROM_BOOLEAN_TEST_ADDR 10 //requires 1 byte
 
 extern uint8_t nrfAddress[EEPROM_NRF_ADDRESS_ARRAY_SIZE]; // NRF chip address as an array of bytes
+extern long int numberTest;
+extern bool booleanTest;
 
 void loadValues();
 void saveValues();

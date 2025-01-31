@@ -19,6 +19,9 @@ void loadValues()
     for (int i = 0; i < EEPROM_NRF_ADDRESS_ARRAY_SIZE; i++) {
         nrfAddress[i] = EEPROM.read(EEPROM_NRF_ADDRESS_ADDR + i);
     }
+
+    booleanTest = EEPROM.read(EEPROM_BOOLEAN_TEST_ADDR);
+    EEPROM.get(EEPROM_NUMBER_TEST_ADDR, numberTest); // Use EEPROM.get to read the long int value
 }
 
 void saveValues(){
@@ -36,4 +39,10 @@ void saveValues(){
         }
         setupNRF();
     }
+
+    // Save boolean test (boolean, 1 byte)
+    EEPROM.update(EEPROM_BOOLEAN_TEST_ADDR, booleanTest);
+
+    // Save number test (long int, 4 bytes)
+    EEPROM.put(EEPROM_NUMBER_TEST_ADDR, numberTest);
 }
