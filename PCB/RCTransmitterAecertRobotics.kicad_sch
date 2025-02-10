@@ -6,8 +6,8 @@
 
   (title_block
     (title "Arduino Nano Powered RC Transmitter")
-    (date "2023-12-02")
-    (rev "1.02")
+    (date "2025-02-10")
+    (rev "1.04")
     (company "Aecert Robotics ")
     (comment 1 "Gyroscope, 3.5 Inch Touchscreen, Rechargable Battery.")
     (comment 2 "2 Joysticks, 4 Buttons, 4 Bumpers, 4 Toggle Switches, Rotary Encoder, 2 Potentiometers,")

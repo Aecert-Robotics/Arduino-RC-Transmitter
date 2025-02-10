@@ -78,7 +78,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "Gerber V1.02/")
+      (outputdirectory "Gerber V1.04/")
     )
   )
 
