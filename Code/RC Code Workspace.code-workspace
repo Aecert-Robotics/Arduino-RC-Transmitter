@@ -11,6 +11,10 @@
 		{
 			"name": "Simple-Receiver-Example",
 			"path": "Simple-Receiver-Example"
+		},
+		{
+			"name": "Teensy 4.1 Servo Test",
+			"path": "C:/Users/Ryan/Documents/PlatformIO/Projects/Teensy 4.1 Servo Test"
 		}
 	],
 	"settings": {}
