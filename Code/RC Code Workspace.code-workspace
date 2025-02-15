@@ -14,7 +14,7 @@
 		},
 		{
 			"name": "Teensy 4.1 Servo Test",
-			"path": "C:/Users/Ryan/Documents/PlatformIO/Projects/Teensy 4.1 Servo Test"
+			"path": "../../Micro-Hexapod/Code/Teensy 4.1 Servo Test"
 		}
 	],
 	"settings": {}
