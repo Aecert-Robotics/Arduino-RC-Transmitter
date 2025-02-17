@@ -17,5 +17,10 @@
 			"path": "../../Micro-Hexapod/Code/Teensy 4.1 Servo Test"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"*.tcc": "cpp",
+			"algorithm": "cpp"
+		}
+	}
 }
