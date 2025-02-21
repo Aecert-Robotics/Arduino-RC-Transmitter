@@ -487,3 +487,12 @@ void setupInputs()
     attachInterrupt(digitalPinToInterrupt(encoderPinA), isrA, CHANGE);
     attachInterrupt(digitalPinToInterrupt(encoderPinB), isrB, CHANGE);
 }
+
+
+//max seems to be 8 volts
+float getBatteryVoltageValue()
+{
+    float sensorValue = analogRead(BatteryVoltage_Pin);
+    float voltage = sensorValue * (5.0 / 1023.0) * 2;
+    return voltage;
+}

@@ -27,6 +27,8 @@
 #define PotA_Pin A0
 #define PotB_Pin A14
 
+#define BatteryVoltage_Pin A8
+
 #define RotaryEncoderButton_Pin 39
 
 // External variable declarations
@@ -55,6 +57,8 @@ void isrB();
 int getRotaryEncoderSpins();
 int getRotaryEncoderTotalSpins();
 int getRotaryEncoderSwitchValue();
+float getBatteryVoltageValue();
+
 String getRotaryEncoderSwitchString();
 void setupInputs();
 
