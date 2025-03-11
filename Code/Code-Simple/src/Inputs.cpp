@@ -473,9 +473,6 @@ void setupInputs()
 
     // Gyro
     byte status = mpu.begin();
-    while (status != 0)
-    {
-    }
     delay(500);
     mpu.calcOffsets();
 
