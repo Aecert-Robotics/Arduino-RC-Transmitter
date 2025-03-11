@@ -454,35 +454,42 @@ void setupInputs()
     pinMode(ButtonB_Pin, INPUT_PULLUP);
     pinMode(ButtonC_Pin, INPUT_PULLUP);
     pinMode(ButtonD_Pin, INPUT_PULLUP);
+    Serial.print("Buttons Setup");
 
     // Bumpers
     pinMode(BumperA_Pin, INPUT_PULLUP);
     pinMode(BumperB_Pin, INPUT_PULLUP);
     pinMode(BumperC_Pin, INPUT_PULLUP);
     pinMode(BumperD_Pin, INPUT_PULLUP);
+    Serial.print("Bumpers Setup");
 
     // Switches
     pinMode(SwitchA_Pin, INPUT_PULLUP);
     pinMode(SwitchB_Pin, INPUT_PULLUP);
     pinMode(SwitchC_Pin, INPUT_PULLUP);
     pinMode(SwitchD_Pin, INPUT_PULLUP);
+    Serial.print("Switches Setup");
 
     // Joystick Buttons
     pinMode(JoyLeftButton_Pin, INPUT_PULLUP);
     pinMode(JoyRightButton_Pin, INPUT_PULLUP);
+    Serial.print("Joysticks Setup");
 
     // Gyro
     byte status = mpu.begin();
     delay(500);
     mpu.calcOffsets();
+    Serial.print("Gyro Setup");
 
     // Rotary Encoder
     pinMode(RotaryEncoderButton_Pin, INPUT_PULLUP);
     pinMode(encoderPinA, INPUT);
     pinMode(encoderPinB, INPUT);
+    Serial.print("Rotary Encoders Setup");
 
     attachInterrupt(digitalPinToInterrupt(encoderPinA), isrA, CHANGE);
     attachInterrupt(digitalPinToInterrupt(encoderPinB), isrB, CHANGE);
+    Serial.print("Interrupts Setup");
 }
 
 
