@@ -17,11 +17,17 @@ bool drewScreen = false;
 void setup()
 {
   Serial.begin(9600);
+  Serial.print("Begin Setup");
   setupScreen();
+  Serial.print("Screen Setup");
   setupInputs();
+  Serial.print("Inputs Setup");
   Wire.begin();
+  Serial.print("Wire Setup");
   loadValues();
+  Serial.print("Values Loaded");
   setupNRF();
+  Serial.print("NRF Setup");
 }
 
 void loop()
