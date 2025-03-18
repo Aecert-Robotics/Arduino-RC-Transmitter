@@ -3,9 +3,9 @@
 #include "Arduino.h"
 #include "NRF.h"
 
-#define COXA_PIN 3
-#define FEMUR_PIN 5
-#define TIBIA_PIN 6
+#define COXA_PIN 15
+#define FEMUR_PIN 14
+#define TIBIA_PIN 29
 
 Servo coxaServo;
 Servo femurServo;
@@ -19,6 +19,9 @@ Vector3 targetPosition = Vector3(0, 0, 0);
 Vector3 currentPosition = Vector3(0, 0, 0);
 
 float offsets[3] = {0, 50, 0};
+
+unsigned long previousMillis = 0;
+const long interval = 10; // interval in milliseconds
 
 void JoystickMove();
 void moveToPos(Vector3 pos);
@@ -42,10 +45,18 @@ void setup()
 
 void loop()
 {
-  if (!rc_data.toggle_A) moveToPos(calibrationPosition);
-  else JoystickMove();
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval)
+  {
+    previousMillis = currentMillis;
 
-  receiveNRFData();
+    if (!rc_data.toggle_A)
+      moveToPos(calibrationPosition);
+    else
+      JoystickMove();
+
+    receiveNRFData();
+  }
 }
 
 void JoystickMove()
@@ -55,7 +66,7 @@ void JoystickMove()
   int zVal = floatMap(rc_data.joyLeft_Y, 0, 256, -110, 40);
 
   targetPosition = Vector3(xVal, yVal, zVal);
-  currentPosition = currentPosition + (targetPosition - currentPosition) * 0.02;
+  currentPosition = currentPosition + (targetPosition - currentPosition) * 0.04;
 
   moveToPos(currentPosition);
 }
@@ -89,10 +100,14 @@ void moveToPos(Vector3 pos)
   float phi3 = acos(constrain((pow(a2, 2) + pow(a3, 2) - pow(h, 2)) / (2 * a2 * a3), -1, 1));
   float theta3 = (phi3 * 180 / PI) + o3;
 
-  coxaServo.write(180 - theta1);
-  femurServo.write(180 - theta2);
+  theta1 = 180 - theta1;
+  theta2 = theta2;
+  theta3 = 180 - theta3;
+
+  coxaServo.write(theta1);
+  femurServo.write(theta2);
   tibiaServo.write(theta3);
-  // Serial.println("Theta1: " + String(theta1) + " Theta2: " + String(theta2) + " Theta3: " + String(theta3));
+  Serial.println("Theta1: " + String(theta1) + " Theta2: " + String(theta2) + " Theta3: " + String(theta3));
   return;
 }
 
