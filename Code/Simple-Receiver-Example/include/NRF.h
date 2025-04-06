@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include "RF24.h" 
-#include "nRF24L01.h" 
+#include "RF24.h"
 #include <vectors.h>
 
 extern RF24 radio;

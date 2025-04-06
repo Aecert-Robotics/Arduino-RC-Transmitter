@@ -39,21 +39,27 @@ void HomePage::loop()
 {    
     rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-    rc_control_data.joy1_X = getJoyValue(A).x;
-    rc_control_data.joy1_Y = getJoyValue(A).y;
-    rc_control_data.joy1_Button = getJoyButtonValue(A);
-    rc_control_data.joy2_X = getJoyValue(B).x;
-    rc_control_data.joy2_Y = getJoyValue(B).y;
-    rc_control_data.joy2_Button = getJoyButtonValue(B);
-    rc_control_data.slider1 = getPotValue(A);
-    rc_control_data.slider2 = getPotValue(B);
-    rc_control_data.pushButton1 = getBumperValue(A);
-    rc_control_data.pushButton2 = getBumperValue(C); 
-       
-    rc_control_data.dynamic_stride_length = dynamicStrideLength;
+    rc_control_data.joyLeft_X = getJoyValue(A).x;
+    rc_control_data.joyLeft_Y = getJoyValue(A).y;
+    rc_control_data.joyLeft_Button = getJoyButtonValue(A);
+    rc_control_data.joyRight_X = getJoyValue(B).x;
+    rc_control_data.joyRight_Y = getJoyValue(B).y;
+    rc_control_data.joyRight_Button = getJoyButtonValue(B);
+    rc_control_data.potLeft = getPotValue(A);
+    rc_control_data.potRight = getPotValue(B);
+    rc_control_data.button_A = getButtonValue(A);
+    rc_control_data.button_B = getButtonValue(B);
+    rc_control_data.button_C = getButtonValue(C);
+    rc_control_data.button_D = getButtonValue(D);
+    rc_control_data.toggle_A = getSwitchValue(A);
+    rc_control_data.toggle_B = getSwitchValue(B);
+    rc_control_data.toggle_C = getSwitchValue(C);
+    rc_control_data.toggle_D = getSwitchValue(D);
+    rc_control_data.bumper_A = getBumperValue(A);
+    rc_control_data.bumper_B = getBumperValue(B);
+    rc_control_data.bumper_C = getBumperValue(C);
+    rc_control_data.bumper_D = getBumperValue(D);       
     rc_control_data.gait = selectedGait;
-    rc_control_data.idle = 0; 
-    rc_control_data.sleep = (long int)getTimeSinceLastInput() > sleepDelayTime ? 1 : 0; 
 
     startTime = millis(); 
     
@@ -129,10 +135,10 @@ void HomePage::loop()
 
 
     for (int i = 0; i < 6; i++) {
-        legs[i].x = foot_positions[i].x/13;
-        legs[i].y = foot_positions[i].y/13;
+        legs[i].x = foot_positions[i].y/13;
+        legs[i].y = foot_positions[i].x/13;
         legs[i].z = 0;
-        rotateLeg(56*rotationMultiplier[i], legs[i], Vector2(2,0));
+        rotateLeg(55*rotationMultiplier[i], legs[i], Vector2(2,0));
         legs[i].x *= legsXMultiplier[i];
         legs[i].y *= legsYMultiplier[i];
     }

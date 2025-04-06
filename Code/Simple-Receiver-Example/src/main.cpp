@@ -10,9 +10,9 @@
 Servo coxaServo;
 Servo femurServo;
 Servo tibiaServo;
-float a1 = 28.1;  // coxa length
-float a2 = 67.8;  // femur length
-float a3 = 117.5; // tibia length
+float a1 = 48;  // coxa length
+float a2 = 105;  // femur length
+float a3 = 185; // tibia length
 float legLength = a1 + a2 + a3;
 Vector3 calibrationPosition = Vector3(0, a1 + a3, a2);
 Vector3 targetPosition = Vector3(0, 0, 0);
@@ -21,7 +21,7 @@ Vector3 currentPosition = Vector3(0, 0, 0);
 float offsets[3] = {0, 50, 0};
 
 unsigned long previousMillis = 0;
-const long interval = 10; // interval in milliseconds
+const long interval = 2; // interval in milliseconds
 
 void JoystickMove();
 void moveToPos(Vector3 pos);
@@ -31,15 +31,13 @@ float floatMap(float x, float in_min, float in_max, float out_min, float out_max
 void setup()
 {
   Serial.begin(9600);
+
   coxaServo.attach(COXA_PIN);
   femurServo.attach(FEMUR_PIN);
   tibiaServo.attach(TIBIA_PIN);
-
-  Vector3 pos1 = Vector3(0, 0, 0);
-  Vector3 pos2 = Vector3(0, a1 + a3, a2);
  
   setupNRF();
-
+  currentPosition = calibrationPosition;
   delay(100);
 }
 
@@ -61,12 +59,12 @@ void loop()
 
 void JoystickMove()
 {
-  int xVal = floatMap(rc_data.joyLeft_X, 0, 256, 130, -130);
-  int yVal = floatMap(rc_data.joyRight_Y, 0, 256, 150, 70);
-  int zVal = floatMap(rc_data.joyLeft_Y, 0, 256, -110, 40);
+  int xVal = floatMap(rc_data.joyLeft_X, 0, 256, 230, -230);
+  int yVal = floatMap(rc_data.joyRight_Y, 0, 256, 300, 160);
+  int zVal = floatMap(rc_data.joyLeft_Y, 0, 256, -200, 200);
 
   targetPosition = Vector3(xVal, yVal, zVal);
-  currentPosition = currentPosition + (targetPosition - currentPosition) * 0.04;
+  currentPosition = currentPosition + (targetPosition - currentPosition) * 0.02;
 
   moveToPos(currentPosition);
 }

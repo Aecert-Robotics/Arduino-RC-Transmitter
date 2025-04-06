@@ -6,8 +6,6 @@
 #include "NRF.h"
 
 int hovered = 0;
-int8_t offsets[OFFSETS_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-int8_t hexSavedOffsets[OFFSETS_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 Vector2 offsetLocations[OFFSETS_COUNT] = {
     Vector2(66,30), 
@@ -44,23 +42,25 @@ unsigned long lastCursorBlinkTime = 0;
 const unsigned long cursorBlinkInterval = 500; // 500ms interval for cursor blink
 bool cursorVisible = true;
 
-bool offsetsModified = false;
-
 void OffsetsPage::init()
 {
     lastCursorBlinkTime = millis(); // Initialize the cursor blink timer
-    offsetsModified = false; // Reset the modified flag
-    memcpy(offsets, hexSavedOffsets, sizeof(offsets)); // Load the offsets from the hex_data struct
 
     rotaryEncoderButtonReady = false;
     rotaryEncoderSwitchValue = UNPRESSED;
+    rc_settings_data.calibrating = 1;
 }
 
 void OffsetsPage::loop()
 {       
     rotaryEncoderSwitchValue = getRotaryEncoderSwitchValue();
 
-    if (getButtonValue(A) == PRESSED) currentPage = mainMenuPage;
+    // Exit the page
+    if (getButtonValue(A) == PRESSED) 
+    {
+        currentPage = mainMenuPage;
+        rc_settings_data.calibrating = 0;
+    }
     drawPageHeader("< Home < Menu < ", "Offsets");
 
     /*Debug Text
@@ -92,6 +92,9 @@ void OffsetsPage::loop()
     else if (hovered < 0)
         hovered = OFFSETS_COUNT-1;
 
+    //Tell the hexapod which servo to calibrate
+    rc_settings_data.calibrationIndex = hovered; 
+
     // Reset cursor blink timer if hovered has changed
     if (hovered != previousHovered) {
         lastCursorBlinkTime = millis();
@@ -99,34 +102,36 @@ void OffsetsPage::loop()
     }
 
     // Increment or decrement offsets[hovered] based on button presses
+    rc_settings_data.increaseValue = UNPRESSED;
+    rc_settings_data.decreaseValue = UNPRESSED;
+
     unsigned long currentTime = millis();
     if (currentTime - lastIncrementTime >= currentScrollDelay || currentScrollDelay == maxScrollDelay)
-    {
-        int incrementValue = (currentScrollDelay == minScrollDelay) ? 2 : 1; // Increment by 2 if at min scroll delay
+    {     
+        //increment button pressed
         if (getButtonValue(C) == PRESSED)
         {
-            offsets[hovered] += incrementValue;
-            if(offsets[hovered] > 99) offsets[hovered] = 99;
+            //tell the hexapod to increase the offset of the servo thats being calibrated
+            if(hex_settings_data.calibrationOffsets[hovered] < 99) rc_settings_data.increaseValue = PRESSED;
+
             lastIncrementTime = currentTime;
             currentScrollDelay = max(minScrollDelay, currentScrollDelay - minScrollDelay); // Decrease delay
-            offsetsModified = true; // Mark offsets as modified
         }
+
+        //decrement button pressed
         else if (getButtonValue(D) == PRESSED)
         {
-            offsets[hovered] -= incrementValue;
-            if(offsets[hovered] < -99) offsets[hovered] = -99;
+            //tell the hexapod to decrease the offset of the servo thats being calibrated
+            if(hex_settings_data.calibrationOffsets[hovered] > -99) rc_settings_data.decreaseValue = PRESSED;
+
             lastIncrementTime = currentTime;
             currentScrollDelay = max(minScrollDelay, currentScrollDelay - minScrollDelay); // Decrease delay
-            offsetsModified = true; // Mark offsets as modified
         }
         else
         {
-            currentScrollDelay = maxScrollDelay; // Reset delay when no button is pressed
+            currentScrollDelay = maxScrollDelay; // Reset delay when no button is pressed            
         }
     }
-
-    // set the settings_data offsets to the modified offsets
-    memcpy(rc_settings_data.offsets, offsets, sizeof(rc_settings_data.offsets)); 
 
     // Handle cursor blinking
     if (currentTime - lastCursorBlinkTime >= cursorBlinkInterval)
@@ -151,7 +156,7 @@ void OffsetsPage::loop()
     u8g2.setFont(FONT_TINY_NUMBERS);    
     for (int i = 0; i < OFFSETS_COUNT; i++)
     {
-        String offsetStr = String(offsets[i]);
+        String offsetStr = String(hex_settings_data.calibrationOffsets[i]);
         int strWidth = u8g2.getStrWidth(offsetStr.c_str());        
         int centeredX = offsetLocations[i].x - (strWidth / 2); // Center the text
         if (i == hovered && cursorVisible) {            
