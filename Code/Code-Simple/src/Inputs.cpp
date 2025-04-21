@@ -441,7 +441,8 @@ String getLastInputName()
     return lastInputName;
 }
 
-String getPotsString() {
+String getPotsString()
+{
     int potA = getPotValue(A);
     int potB = getPotValue(B);
     return "PotA: " + String(potA) + " PotB: " + String(potB);
@@ -450,50 +451,57 @@ String getPotsString() {
 void setupInputs()
 {
     // Buttons
+    Serial.println("Initializing Buttons");
     pinMode(ButtonA_Pin, INPUT_PULLUP);
     pinMode(ButtonB_Pin, INPUT_PULLUP);
     pinMode(ButtonC_Pin, INPUT_PULLUP);
     pinMode(ButtonD_Pin, INPUT_PULLUP);
-    Serial.print("Buttons Setup");
 
     // Bumpers
+    Serial.println("Initializing Bumpers");
     pinMode(BumperA_Pin, INPUT_PULLUP);
     pinMode(BumperB_Pin, INPUT_PULLUP);
     pinMode(BumperC_Pin, INPUT_PULLUP);
     pinMode(BumperD_Pin, INPUT_PULLUP);
-    Serial.print("Bumpers Setup");
 
     // Switches
+    Serial.println("Initializing Switches");
     pinMode(SwitchA_Pin, INPUT_PULLUP);
     pinMode(SwitchB_Pin, INPUT_PULLUP);
     pinMode(SwitchC_Pin, INPUT_PULLUP);
     pinMode(SwitchD_Pin, INPUT_PULLUP);
-    Serial.print("Switches Setup");
 
     // Joystick Buttons
+    Serial.println("Initializing Joystick Buttons");
     pinMode(JoyLeftButton_Pin, INPUT_PULLUP);
     pinMode(JoyRightButton_Pin, INPUT_PULLUP);
-    Serial.print("Joysticks Setup");
 
     // Gyro
+    Serial.println("Initializing Gyro");
     byte status = mpu.begin();
-    delay(500);
-    mpu.calcOffsets();
-    Serial.print("Gyro Setup");
+    if (status != 0)
+    {
+        Serial.println("Gyro initialization failed! Skipping gyro setup.");
+    }
+    else
+    {
+        delay(500);
+        mpu.calcOffsets();
+    }
 
     // Rotary Encoder
+    Serial.println("Initializing Rotary Encoder");
     pinMode(RotaryEncoderButton_Pin, INPUT_PULLUP);
     pinMode(encoderPinA, INPUT);
     pinMode(encoderPinB, INPUT);
-    Serial.print("Rotary Encoders Setup");
 
+    // Interrupts
+    Serial.println("Initializing Interrupts");
     attachInterrupt(digitalPinToInterrupt(encoderPinA), isrA, CHANGE);
     attachInterrupt(digitalPinToInterrupt(encoderPinB), isrB, CHANGE);
-    Serial.print("Interrupts Setup");
 }
 
-
-//max seems to be 8 volts
+// max seems to be 8 volts
 float getBatteryVoltageValue()
 {
     float sensorValue = analogRead(BatteryVoltage_Pin);

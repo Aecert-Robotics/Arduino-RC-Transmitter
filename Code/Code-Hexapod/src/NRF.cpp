@@ -31,6 +31,8 @@ void setupNRF()
     rc_control_data.joyRight_Y = 127;
     rc_control_data.potLeft = 50;
     rc_control_data.potRight = 50;
+    rc_control_data.gyro_X = 0;
+    rc_control_data.gyro_Y = 0;
     rc_control_data.button_A = UNPRESSED;
     rc_control_data.button_B = UNPRESSED;
     rc_control_data.button_C = UNPRESSED;

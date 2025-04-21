@@ -17,17 +17,23 @@ bool drewScreen = false;
 void setup()
 {
   Serial.begin(9600);
-  Serial.print("Begin Setup");
+  Serial.println("Begin Initialization");
+  Serial.println("Initializing Screen");
   setupScreen();
-  Serial.print("Screen Setup");
-  setupInputs();
-  Serial.print("Inputs Setup");
+
+  Serial.println("Initializing Wire Library");
   Wire.begin();
-  Serial.print("Wire Setup");
+
+  Serial.println("Initializing Inputs");
+  setupInputs(); 
+  
+  Serial.println("Loading Saved Values from EEPROM");
   loadValues();
-  Serial.print("Values Loaded");
+  
+  Serial.println("Initializing NRF");
   setupNRF();
-  Serial.print("NRF Setup");
+  
+  Serial.println("Initialization Finished");
 }
 
 void loop()

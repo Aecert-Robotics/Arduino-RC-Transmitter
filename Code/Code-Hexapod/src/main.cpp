@@ -42,9 +42,16 @@ void loop()
     else
       rc_settings_data.calibrating = 0;
 
-    u8g2.clearBuffer();
-    currentPage->loop();
-    u8g2.sendBuffer();
+    //if in gyro mode, do not draw the screen and update the mpu more often
+    if (currentPage == homePage && rc_control_data.bumper_A == PRESSED){
+      currentPage->loop();
+      mpu.update();
+    }
+    else{
+      u8g2.clearBuffer();
+      currentPage->loop();
+      u8g2.sendBuffer();
+    }   
 
     drewScreen = true;
   }

@@ -25,6 +25,9 @@ struct RC_Control_Data_Package {
     byte potLeft; // 1 byte
     byte potRight; // 1 byte 
 
+    int8_t gyro_X; // 1 byte
+    int8_t gyro_Y; // 1 byte
+
     //1 byte
     byte button_A:1; // 1 bit
     byte button_B:1; // 1 bit

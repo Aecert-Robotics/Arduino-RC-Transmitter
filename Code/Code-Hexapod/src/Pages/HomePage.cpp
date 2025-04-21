@@ -58,8 +58,13 @@ void HomePage::loop()
     rc_control_data.bumper_A = getBumperValue(A);
     rc_control_data.bumper_B = getBumperValue(B);
     rc_control_data.bumper_C = getBumperValue(C);
-    rc_control_data.bumper_D = getBumperValue(D);       
+    rc_control_data.bumper_D = getBumperValue(D);   
+    rc_control_data.gyro_X = readGyro().x;
+    rc_control_data.gyro_Y = readGyro().y;    
     rc_control_data.gait = selectedGait;
+
+    //if bumper A is pressed, do not draw the screen
+    if(rc_control_data.bumper_A == PRESSED) return;
 
     startTime = millis(); 
     
