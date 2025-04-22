@@ -309,9 +309,9 @@ String getJoyValueString(IOLabels label)
 Vector3 readGyro()
 {
 
-    gad.x = mpu.getAngleX();
-    gad.y = mpu.getAngleY();
-    gad.z = mpu.getAngleZ();
+    gad.x = constrain(mpu.getAngleX(), -30, 30);
+    gad.y = constrain(mpu.getAngleY(), -30, 30);
+    gad.z = constrain(mpu.getAngleZ(), -30, 30);
 
     return gad;
 }

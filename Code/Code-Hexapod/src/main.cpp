@@ -26,39 +26,49 @@ void setup()
 
 void loop()
 {
+  mpu.update();
   drewScreen = false;
   every(UpdateScreenInterval)
   {
-    mpu.update();
-
     if (previousPage != currentPage)
     {
       currentPage->init();
       previousPage = currentPage;
     }
 
-    if (currentPage == offsetsPage)
-      rc_settings_data.calibrating = 1;
-    else
-      rc_settings_data.calibrating = 0;
+    if (currentPage == offsetsPage) rc_settings_data.calibrating = 1;
+    else rc_settings_data.calibrating = 0;
 
-    //if in gyro mode, do not draw the screen and update the mpu more often
-    if (currentPage == homePage && rc_control_data.bumper_A == PRESSED){
+    /*
+    // if in gyro mode, do not draw the screen
+    if (currentPage == homePage && rc_control_data.bumper_A == PRESSED)
+    {
       currentPage->loop();
-      mpu.update();
+      //print the gyro data
+      Serial.print("Gyro X: ");
+      Serial.print(rc_control_data.gyro_X);
+      Serial.print(" Gyro Y: ");
+      Serial.println(rc_control_data.gyro_Y);
     }
-    else{
+    else
+    {
       u8g2.clearBuffer();
       currentPage->loop();
       u8g2.sendBuffer();
-    }   
+    }
+      */
+      //print the gyro data
+      
+
+      u8g2.clearBuffer();
+      currentPage->loop();
+      u8g2.sendBuffer();
 
     drewScreen = true;
   }
 
   if (!drewScreen)
-  {
-    mpu.update();
+  {    
     if (currentPage == homePage)
       sendNRFData(RC_CONTROL_DATA);
     else

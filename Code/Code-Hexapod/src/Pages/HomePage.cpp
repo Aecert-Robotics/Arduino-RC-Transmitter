@@ -64,7 +64,7 @@ void HomePage::loop()
     rc_control_data.gait = selectedGait;
 
     //if bumper A is pressed, do not draw the screen
-    if(rc_control_data.bumper_A == PRESSED) return;
+    //if(rc_control_data.bumper_A == PRESSED) return;
 
     startTime = millis(); 
     
